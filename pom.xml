@@ -33,9 +33,9 @@
     </developers>
     <scm>
         <tag>main</tag>
-        <connection>https://github.com/aliothliu/gabbro-spring-boot-starter.git</connection>
-        <developerConnection>https://github.com/aliothliu/gabbro-spring-boot-starter.git</developerConnection>
-        <url>https://github.com/aliothliu/gabbro-spring-boot-starter.git</url>
+        <connection>https://github.com/aliothliu/marble-spring-boot-starter.git</connection>
+        <developerConnection>https://github.com/aliothliu/marble-spring-boot-starter.git</developerConnection>
+        <url>https://github.com/aliothliu/marble-spring-boot-starter.git</url>
     </scm>
 
     <dependencies>

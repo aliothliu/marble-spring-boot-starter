@@ -6,7 +6,16 @@
 
     <groupId>io.github.aliothliu</groupId>
     <artifactId>marble-spring-boot-starter</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>core</module>
+        <module>domain</module>
+        <module>rbac</module>
+        <module>acl</module>
+        <module>jpa-persistence</module>
+        <module>web</module>
+    </modules>
 
     <name>stone-spring-boot-starter</name>
     <!-- FIXME change it to the project's website -->
@@ -16,6 +25,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <spring.boot.version>2.7.0</spring.boot.version>
+        <problem.version>0.27.0</problem.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 
     <licenses>
@@ -39,7 +51,21 @@
     </scm>
 
     <dependencies>
-
+        <!-- zalando problem -->
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem-spring-web-starter</artifactId>
+            <version>${problem.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <distributionManagement>

@@ -1,5 +1,6 @@
 package io.github.aliothliu.marble.rbac.domain;
 
+import io.github.aliothliu.rbac.domain.Sort;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

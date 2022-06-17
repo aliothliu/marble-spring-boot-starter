@@ -1,7 +1,11 @@
 package io.github.aliothliu.marble.rbac.domain;
 
-import io.github.aliothliu.marble.rbac.AssertionException;
-import io.github.aliothliu.marble.rbac.MarbleRbacRegistry;
+import io.github.aliothliu.rbac.RbacRegistry;
+import io.github.aliothliu.rbac.domain.AssertionException;
+import io.github.aliothliu.rbac.domain.role.Role;
+import io.github.aliothliu.rbac.domain.role.RoleCode;
+import io.github.aliothliu.rbac.domain.role.RoleRepository;
+import io.github.aliothliu.rbac.domain.role.Status;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -9,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringJUnitConfig(classes = MarbleRbacRegistry.class)
+@SpringJUnitConfig(classes = RbacRegistry.class)
 class RoleTest {
 
     @MockBean

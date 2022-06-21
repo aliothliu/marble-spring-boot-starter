@@ -28,8 +28,6 @@ public class RbacMenuServiceImpl implements RbacMenuService {
 
     private final PageRepository pageRepository;
 
-    private final RbacRoleServiceImpl rbacRoleManager;
-
     private final MenuSortService sortService;
 
     private final RbacProperties rbacProperties;
@@ -124,7 +122,7 @@ public class RbacMenuServiceImpl implements RbacMenuService {
 
         this.repository.save(newMenu);
 
-        this.rbacRoleManager.handleMenuCreated(newMenu.getMenuId(), pageId);
+//        this.rbacRoleManager.handleMenuCreated(newMenu.getMenuId(), pageId);
 
         return newMenu.getMenuId();
     }
@@ -203,7 +201,7 @@ public class RbacMenuServiceImpl implements RbacMenuService {
     }
 
     private MenuRepresentation.Element from(Element element) {
-        return new MenuRepresentation.Element(element.getId(), element.getName(), element.getReadableName());
+        return new MenuRepresentation.Element(element.getId().getId(), element.getName(), element.getReadableName());
     }
 
     protected List<MenuRepresentation> limitMenus(Set<MenuId> limited) {

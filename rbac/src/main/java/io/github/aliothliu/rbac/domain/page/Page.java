@@ -1,8 +1,6 @@
 package io.github.aliothliu.rbac.domain.page;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.util.Assert;
 
@@ -15,10 +13,13 @@ import java.util.Set;
 @Getter
 @FieldNameConstants
 @RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Page {
 
     @EmbeddedId
-    private final PageId pageId = PageId.uuid();
+    @NonNull
+    private PageId pageId;
 
     @Column(name = "name", nullable = false, unique = true, length = 128)
     @NonNull

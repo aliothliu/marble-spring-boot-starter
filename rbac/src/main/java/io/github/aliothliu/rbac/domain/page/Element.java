@@ -1,10 +1,6 @@
 package io.github.aliothliu.rbac.domain.page;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -15,17 +11,25 @@ import java.util.Objects;
 @Table(name = "#{rbacProperties.jpa.pageElementTableName}")
 @AllArgsConstructor
 @EqualsAndHashCode
+@RequiredArgsConstructor
 public class Element {
 
-    @Id
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @GeneratedValue(generator = "uuid")
-    private String id;
+    @EmbeddedId
+    @NonNull
+    private ElementId id;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "id", column = @Column(name = "page_id", length = 40))
+    })
+    private PageId pageId;
 
     @Column(name = "name", length = 128, nullable = false)
+    @NonNull
     private String name;
 
     @Column(name = "readable_name", length = 128, nullable = false)
+    @NonNull
     private String readableName;
 
     @Embedded

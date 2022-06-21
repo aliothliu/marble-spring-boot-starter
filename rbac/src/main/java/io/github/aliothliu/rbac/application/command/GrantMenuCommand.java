@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Schema(name = "角色分配菜单参数对象")
-public class AssignMenusCommand {
+public class GrantMenuCommand {
     @Schema(name = "菜单列表")
     @NotEmpty(message = "菜单不能为空")
     private List<String> menus;

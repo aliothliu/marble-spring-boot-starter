@@ -11,6 +11,10 @@ public class RoleRepresentation {
 
     private String name;
 
+    private String type;
+
+    private String typeDesc;
+
     private String status;
 
     private String statusDesc;

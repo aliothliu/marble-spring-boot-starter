@@ -43,7 +43,7 @@ public class RbacPageServiceImpl implements RbacPageService {
         Set<Element> pageElements = elements.stream()
                 .map(el -> Element.builder().name(el.getName()).readableName(el.getReadableName()).api(new Api(el.getMethod(), el.getUri())).build())
                 .collect(Collectors.toSet());
-        Page page = new Page(name, new Path(path, target));
+        Page page = new Page(PageId.uuid(), name, new Path(path, target));
         page.changeElements(pageElements);
         this.repository.save(page);
         return page.getPageId();

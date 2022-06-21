@@ -4,13 +4,14 @@ import org.casbin.jcasbin.model.Assertion;
 import org.casbin.jcasbin.model.Model;
 import org.casbin.jcasbin.persist.BatchAdapter;
 import org.casbin.jcasbin.persist.Helper;
+import org.casbin.jcasbin.persist.UpdatableAdapter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SpringDataJpaAdapter implements BatchAdapter {
+public class SpringDataJpaAdapter implements BatchAdapter, UpdatableAdapter {
 
     private final CasbinRuleRepository repository;
 
@@ -102,10 +103,14 @@ public class SpringDataJpaAdapter implements BatchAdapter {
     @Override
     public void removeFilteredPolicy(String sec, String ptype, int fieldIndex, String... fieldValues) {
         List<String> rules = Optional.of(Arrays.asList(fieldValues)).orElse(new ArrayList<>());
-        if (CollectionUtils.isEmpty(rules)) return;
+        if (CollectionUtils.isEmpty(rules)) {
+            return;
+        }
         StringBuilder sql = new StringBuilder("DELETE FROM rbac_rule WHERE ptype = '" + ptype + "'");
         for (int i = 0; i < rules.size(); i++) {
-            sql.append(" AND v").append(i).append(" = '").append(rules.get(i)).append("'");
+            if (Objects.nonNull(rules.get(i))) {
+                sql.append(" AND v").append(i).append(" = '").append(rules.get(i)).append("'");
+            }
         }
         this.jdbcTemplate.execute(sql.toString());
     }
@@ -120,5 +125,10 @@ public class SpringDataJpaAdapter implements BatchAdapter {
     @Override
     public void removePolicies(String sec, String ptype, List<List<String>> list) {
         list.forEach(rule -> this.removePolicy(sec, ptype, rule));
+    }
+
+    @Override
+    public void updatePolicy(String sec, String ptype, List<String> oldRule, List<String> newRule) {
+
     }
 }

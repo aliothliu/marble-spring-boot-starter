@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 public class Menu implements Comparable<Menu> {
 
     @EmbeddedId
-    private final MenuId menuId = MenuId.uuid();
+    @NonNull
+    private MenuId menuId;
 
     @Column(name = "name", length = 128, nullable = false)
     @NonNull

@@ -3,6 +3,7 @@ package io.github.aliothliu.rbac;
 import io.github.aliothliu.rbac.application.RbacMenuService;
 import io.github.aliothliu.rbac.domain.menu.MenuPathRepository;
 import io.github.aliothliu.rbac.domain.menu.MenuRepository;
+import io.github.aliothliu.rbac.domain.page.ElementRepository;
 import io.github.aliothliu.rbac.domain.page.PageRepository;
 import io.github.aliothliu.rbac.domain.role.RoleRepository;
 import org.casbin.jcasbin.main.Enforcer;
@@ -30,6 +31,10 @@ public final class RbacRegistry implements ApplicationContextAware {
 
     public static RoleRepository roleRepository() {
         return applicationContext.getBean(RoleRepository.class);
+    }
+
+    public static ElementRepository elementRepository() {
+        return applicationContext.getBean(ElementRepository.class);
     }
 
     public static Enforcer enforcer() {

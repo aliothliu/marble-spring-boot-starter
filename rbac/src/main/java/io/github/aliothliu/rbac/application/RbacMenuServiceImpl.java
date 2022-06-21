@@ -133,7 +133,7 @@ public class RbacMenuServiceImpl implements RbacMenuService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void update(MenuId menuId, String name, PageId pageId, String icon, MenuId parentId) {
         Assert.notNull(menuId, "菜单ID不能为空");
         Menu menu = this.repository.findById(menuId).orElseThrow(() -> new NonMatchEntityException("更新失败：未查询到匹配的菜单数据"));
@@ -147,7 +147,7 @@ public class RbacMenuServiceImpl implements RbacMenuService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void remove(MenuId id) {
         Assert.notNull(id, "删除参数ID不能为空");
         Menu menu = this.repository.findById(id).orElseThrow(() -> new NonMatchEntityException("删除失败：未查询到匹配的菜单数据"));

@@ -19,3 +19,119 @@ Marble是一个基于Spring Boot的开箱即用的RBAC框架，允许开发者�
 * Subject: 权限的集合主体，可以是角色、角色组等
 
 ### 开始使用
+
+#### 一、安装依赖
+```
+<dependency>
+    <groupId>io.github.aliothliu.marble</groupId>
+    <artifactId>rbac</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+    <groupId>io.github.aliothliu.marble</groupId>
+    <artifactId>acl</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+#### 二、启用配置
+
+```
+@SpringBootApplication(
+	scanBasePackageClasses = {
+		MarbleRbacConfiguration.class,
+		<YourSpringApplication> .class
+	}
+)
+public class YourSpringApplication {
+	....
+}
+```
+
+1. RbacConfiguration.class 启用RBAC模块
+   2.AclConfiguration.class 启用Acl模块
+
+**注意：** 如使用ACL则进行额外的配置
+
+```
+@EnableJpaRepositories(basePackages = {"Your package"},  repositoryFactoryBeanClass = AclJpaRepositoryFactoryBean.class)
+```
+
+#### 三、配置文件
+
+```
+spring:
+  jpa:
+    hibernate:
+      naming:
+        # 配置命名策略
+        physical-strategy: io.github.aliothliu.rbac.infrastructure.jpa.ConfigurableSpringPhysicalNamingStrategy
+marble:
+  rbac:
+    web:
+      # 配置api路径前缀
+      prefix: api
+    jpa:
+      # 配置数据库表名前缀
+      ruleTableName: rbac_rule
+      roleTableName: rbac_role
+      menuTableName: rbac_menu
+      menuPathTableName: rbac_menu_path
+      pageTableName: rbac_page
+      pageElementTableName: rbac_page_element
+      pageElementRefTableName: rbac_ref_page_element
+```
+
+#### 四、RBAC使用
+
+1. 如何使用 Subject
+
+`Subject subject = new RbacSubject("user identity"); 用以构建Subject对象，其中构造函数参数为用户的唯一标识，可以通过Spring Security或者Apache Shiro获取当前登录用户
+
+2. 查询当前登录用户的菜单树
+
+```
+Subject subject = new RbacSubject("user identity");
+subject.loadMenuForest();
+```
+
+#### 五、ACL使用
+
+1. 配置JpaAclStrategy
+
+```
+@Component(value = "CreatorJpaAclStrategy")
+public class CreatorJpaAclStrategy<T> implements JpaAclStrategy<T> {
+
+    @Override
+    public Optional<Specification<T>> criteria() {
+        return Optional.of((root, criteriaQuery, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("createdBy"), "admin");
+        });
+    }
+}
+```
+
+"admin"字符串可以替换成当前登录用户的ID，实现登录用户的数据隔离。此策略可以定义多种不同的实现，如可以配置基于角色控制的数据隔离。
+
+2. 配置Entity
+
+```
+@Entity
+@Acl(strategy = CreatorJpaAclStrategy.class)
+public class Custom {
+
+    @Id
+    private String id;
+
+    private String name;
+
+    private String department;
+
+    private String createdBy;
+```
+
+使用注解 @Acl 来注释当前实体对应的数据隔离权限的策略，若实体不需要数据权限隔离，可以不注解或者使用@NoAcl
+
+

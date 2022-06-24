@@ -1,6 +1,7 @@
 package io.github.aliothliu.rbac.application;
 
 import io.github.aliothliu.rbac.RbacProperties;
+import io.github.aliothliu.rbac.RbacRegistry;
 import io.github.aliothliu.rbac.application.representation.MenuRepresentation;
 import io.github.aliothliu.rbac.domain.menu.*;
 import io.github.aliothliu.rbac.domain.page.*;
@@ -122,7 +123,7 @@ public class RbacMenuServiceImpl implements RbacMenuService {
 
         this.repository.save(newMenu);
 
-//        this.rbacRoleManager.handleMenuCreated(newMenu.getMenuId(), pageId);
+        RbacRegistry.eventPublisher().publish(new MenuCreated(this, newMenu.getMenuId(), pageId));
 
         return newMenu.getMenuId();
     }

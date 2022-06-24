@@ -1,6 +1,7 @@
 package io.github.aliothliu.rbac.domain.page;
 
 import io.github.aliothliu.rbac.RbacRegistry;
+import io.github.aliothliu.rbac.domain.Identity;
 import org.springframework.util.Assert;
 
 import javax.persistence.Embeddable;
@@ -9,7 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Embeddable
-public class ElementId implements Serializable {
+public class ElementId implements Serializable, Identity {
 
     private String id;
 
@@ -31,18 +32,18 @@ public class ElementId implements Serializable {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ElementId)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ElementId)) {
+            return false;
+        }
         ElementId elementId = (ElementId) o;
         return Objects.equals(id, elementId.id);
     }
@@ -50,5 +51,15 @@ public class ElementId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public Class<?> target() {
+        return Element.class;
     }
 }

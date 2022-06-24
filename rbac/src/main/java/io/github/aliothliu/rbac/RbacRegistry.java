@@ -1,6 +1,7 @@
 package io.github.aliothliu.rbac;
 
 import io.github.aliothliu.rbac.application.RbacMenuService;
+import io.github.aliothliu.rbac.domain.DomainEventPublisher;
 import io.github.aliothliu.rbac.domain.menu.MenuPathRepository;
 import io.github.aliothliu.rbac.domain.menu.MenuRepository;
 import io.github.aliothliu.rbac.domain.page.ElementRepository;
@@ -47,6 +48,10 @@ public final class RbacRegistry implements ApplicationContextAware {
 
     public static RbacProperties rbacProperties() {
         return applicationContext.getBean(RbacProperties.class);
+    }
+
+    public static DomainEventPublisher eventPublisher() {
+        return applicationContext.getBean(DomainEventPublisher.class);
     }
 
     @Override

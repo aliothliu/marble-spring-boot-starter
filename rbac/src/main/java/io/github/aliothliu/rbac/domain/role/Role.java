@@ -2,14 +2,13 @@ package io.github.aliothliu.rbac.domain.role;
 
 import io.github.aliothliu.rbac.RbacRegistry;
 import io.github.aliothliu.rbac.domain.AssertionConcern;
+import io.github.aliothliu.rbac.domain.Identity;
 import io.github.aliothliu.rbac.domain.menu.Menu;
 import io.github.aliothliu.rbac.domain.menu.MenuId;
-import io.github.aliothliu.rbac.domain.menu.MenuRepository;
 import io.github.aliothliu.rbac.domain.page.Element;
 import io.github.aliothliu.rbac.domain.page.ElementId;
 import io.github.aliothliu.rbac.domain.page.ElementRepository;
 import io.github.aliothliu.rbac.domain.page.PageId;
-import io.github.aliothliu.rbac.infrastructure.errors.RoleGrantException;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.casbin.jcasbin.main.Enforcer;
@@ -87,78 +86,47 @@ public class Role extends AssertionConcern implements Serializable {
         return Type.Super.equals(this.type);
     }
 
-    public void grantMenus(Set<MenuId> menus) {
-        // 移除现有关联菜单
-        this.enforcer().removePolicies(this.grantedMenuPolicies());
-        this.enforcer().removePolicies(this.grantedPagePolicies());
-        this.enforcer().loadPolicy();
-        // 授权菜单策略
-        List<Menu> storedMenus = this.menuRepository().findAllById(menus);
-        if (storedMenus.isEmpty()) {
-            throw new RoleGrantException("角色权限分配失败，不允许分配空菜单");
-        }
-        List<List<String>> policies = new ArrayList<>(this.convertMenu2Policy(this.code, storedMenus));
-        // 授权页面策略
-        List<PageId> pageIds = storedMenus
+    public List<List<String>> newPoliciesFromMenu(List<Menu> menus) {
+        List<List<String>> policies = this.newPolicies(menus.stream().map(Menu::getMenuId).collect(Collectors.toList()));
+        List<PageId> pageIds = menus
                 .stream()
                 .map(Menu::getPageId)
                 .filter(pageId -> Objects.nonNull(pageId) && Objects.nonNull(pageId.getId()))
                 .collect(Collectors.toList());
-        policies.addAll(this.convertPage2Policy(this.code, pageIds));
+        policies.addAll(this.newPolicies(new ArrayList<>(pageIds)));
 
-        this.enforcer().addPolicies(policies);
+        return policies;
     }
 
-    public void grantElements(Set<ElementId> elements) {
-        // 移除现有关联元素
-        this.enforcer().removePolicies(this.grantedElementPolicies());
-        this.enforcer().loadPolicy();
-
-        // 授权元素策略
-        List<Element> storedElements = this.elementRepository().findAllById(elements);
-
-        List<List<String>> policies = storedElements.stream().map(element -> Arrays.asList(
+    public List<List<String>> newPoliciesFromElement(List<Element> elements) {
+        return elements.stream().map(element -> Arrays.asList(
                 this.code.getCode(),
                 element.getId().getId(),
                 Element.class.getSimpleName(),
                 element.getPageId().getId())).collect(Collectors.toList());
-
-        this.enforcer().addPolicies(policies);
-    }
-
-    private List<List<String>> grantedMenuPolicies() {
-        return this.enforcer().getFilteredPolicy(0, this.code.getCode(), null, Menu.class.getSimpleName());
     }
 
     public Set<MenuId> loadMenus() {
         this.enforcer().loadPolicy();
-        return this.grantedMenuPolicies()
+        return this.granted(Menu.class)
                 .stream()
                 .map(rule -> rule.get(1))
                 .map(MenuId::new)
                 .collect(Collectors.toSet());
     }
 
-    private List<List<String>> grantedPagePolicies() {
-        return this.enforcer().getFilteredPolicy(0, this.code.getCode(), null, Page.class.getSimpleName());
-    }
-
     public Set<PageId> loadPages() {
         this.enforcer().loadPolicy();
-        return this.grantedPagePolicies()
+        return this.granted(Page.class)
                 .stream()
                 .map(rule -> rule.get(1))
                 .map(PageId::new)
                 .collect(Collectors.toSet());
     }
 
-    private List<List<String>> grantedElementPolicies() {
-        return this.enforcer().getFilteredPolicy(0, this.code.getCode(), null, Element.class.getSimpleName());
-    }
-
     public Set<String> loadElements() {
         this.enforcer().loadPolicy();
-        return this.grantedElementPolicies()
+        return this.granted(Element.class)
                 .stream()
                 .map(rule -> rule.get(1))
                 .collect(Collectors.toSet());
@@ -169,7 +137,6 @@ public class Role extends AssertionConcern implements Serializable {
             return false;
         }
         this.enforcer().loadPolicy();
-        List<List<String>> policies = this.enforcer().getPolicy();
         return this.enforcer().hasPolicy(Arrays.asList(this.code.getCode(), menuId.getId(), Menu.class.getSimpleName()));
     }
 
@@ -192,23 +159,25 @@ public class Role extends AssertionConcern implements Serializable {
             }
             return this.enforcer().hasPolicy(Arrays.asList(this.code.getCode(), elementId.getId(), Element.class.getSimpleName(), element.getPageId().getId()));
         }).orElse(false);
-
     }
 
-    private List<List<String>> convertMenu2Policy(RoleCode code, List<Menu> menus) {
-        return menus.stream().map(menu -> Arrays.asList(code.getCode(), menu.getMenuId().getId(), Menu.class.getSimpleName())).collect(Collectors.toList());
+    public List<List<String>> newPolicies(List<Identity> identities) {
+        if (Objects.isNull(identities)) {
+            return new ArrayList<>();
+        }
+
+        return identities.stream().map(identity -> Arrays.asList(this.code.getCode(), identity.getId(), identity.target().getSimpleName())).collect(Collectors.toList());
     }
 
-    private List<List<String>> convertPage2Policy(RoleCode code, List<PageId> pageIds) {
-        return pageIds.stream().map(pageId -> Arrays.asList(code.getCode(), pageId.getId(), Page.class.getSimpleName())).collect(Collectors.toList());
+    public List<List<String>> granted(Class<?> clazz) {
+        if (Objects.isNull(clazz)) {
+            return new ArrayList<>();
+        }
+        return this.enforcer().getFilteredPolicy(0, this.code.getCode(), null, clazz.getSimpleName());
     }
 
     private Enforcer enforcer() {
         return RbacRegistry.enforcer();
-    }
-
-    private MenuRepository menuRepository() {
-        return RbacRegistry.menuRepository();
     }
 
     private ElementRepository elementRepository() {

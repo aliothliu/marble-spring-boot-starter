@@ -100,6 +100,8 @@ class RoleApplicationServiceTest {
         this.applicationService.grant(new RoleCode("admin"), command);
         assertTrue(role.hasMenu(new MenuId("dashboard")));
         assertFalse(role.hasMenu(new MenuId("system")));
+        assertTrue(role.hasPage(new PageId("dashboard")));
+        assertFalse(role.hasPage(new PageId("system")));
 
         assertEquals(1, role.loadMenus().size());
         assertTrue(role.loadMenus().contains(new MenuId("dashboard")));

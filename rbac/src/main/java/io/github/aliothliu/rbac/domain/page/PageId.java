@@ -1,6 +1,7 @@
 package io.github.aliothliu.rbac.domain.page;
 
 import io.github.aliothliu.rbac.RbacRegistry;
+import io.github.aliothliu.rbac.domain.Identity;
 import lombok.EqualsAndHashCode;
 import org.springframework.util.Assert;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @Embeddable
 @EqualsAndHashCode
-public class PageId implements Serializable {
+public class PageId implements Serializable, Identity {
 
     private String id;
 
@@ -32,11 +33,17 @@ public class PageId implements Serializable {
         }
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public Class<?> target() {
+        return Page.class;
     }
 }

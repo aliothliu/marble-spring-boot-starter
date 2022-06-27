@@ -39,7 +39,7 @@ public class RoleQueryService {
 
     public Page<RoleRepresentation> paging(String nameLike, Pageable pageable) {
         return this.repository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-            if (Objects.nonNull(nameLike)) {
+            if (Objects.isNull(nameLike)) {
                 return criteriaQuery.getRestriction();
             }
             return criteriaQuery

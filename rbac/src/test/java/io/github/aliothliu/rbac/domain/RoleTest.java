@@ -1,7 +1,6 @@
-package io.github.aliothliu.marble.rbac.domain;
+package io.github.aliothliu.rbac.domain;
 
 import io.github.aliothliu.rbac.RbacRegistry;
-import io.github.aliothliu.rbac.domain.AssertionException;
 import io.github.aliothliu.rbac.domain.role.Role;
 import io.github.aliothliu.rbac.domain.role.RoleCode;
 import io.github.aliothliu.rbac.domain.role.RoleRepository;

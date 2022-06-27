@@ -34,7 +34,7 @@ public class Path {
         this.target = target;
     }
 
-    public String path() {
+    public String getPath() {
         return path;
     }
 
@@ -42,7 +42,7 @@ public class Path {
         this.path = path;
     }
 
-    public PathTarget target() {
+    public PathTarget getTarget() {
         return this.target;
     }
 }

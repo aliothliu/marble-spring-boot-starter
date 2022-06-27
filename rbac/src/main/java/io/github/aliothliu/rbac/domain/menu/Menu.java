@@ -65,14 +65,14 @@ public class Menu implements Comparable<Menu> {
         if (Objects.isNull(pageId)) {
             return null;
         }
-        return pageRepository().findById(this.pageId).map(Page::getPath).map(Path::path).orElse(null);
+        return pageRepository().findById(this.pageId).map(Page::getPath).map(Path::getPath).orElse(null);
     }
 
     public PathTarget getPathTarget() {
         if (Objects.isNull(pageId)) {
             return null;
         }
-        return pageRepository().findById(this.pageId).map(Page::getPath).map(Path::target).orElse(null);
+        return pageRepository().findById(this.pageId).map(Page::getPath).map(Path::getTarget).orElse(null);
     }
 
     public Optional<MenuId> getParentId() {

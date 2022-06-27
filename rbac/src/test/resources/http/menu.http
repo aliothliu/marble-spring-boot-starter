@@ -1,0 +1,46 @@
+### 查询菜单树
+GET {{host}}/api/menus/forest
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 查询根菜单
+GET {{host}}/api/menus/roots
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 查询子菜单
+GET {{host}}/api/menus/5671dd10-6137-47e2-974a-dfe8b3039752/children
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 查询菜单详情
+GET {{host}}/api/menus/92481bd3-adb0-42ef-9dfc-f81c2a996797
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 新建菜单
+POST {{host}}/api/menus
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+{
+  "name": "部门管理",
+  "pageId": "d52346c1-ce8b-458d-9a88-51e1e3752e60",
+  "icon": "dashboard"
+}
+
+### 修改菜单
+PUT {{host}}/api/menus/68aa23f1-9d5a-41fe-87b2-62df7a5ecf5c
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+{
+  "name": "组件示例",
+  "pageId": "8645cacb-ef43-42c4-92c8-e0ebd4813675",
+  "icon": "el-icon-suitcase"
+}
+
+### 删除菜单
+DELETE {{host}}/api/menus/b38445ec-db49-4a11-a192-11d71466b255
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}

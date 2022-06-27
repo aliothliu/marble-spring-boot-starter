@@ -1,0 +1,71 @@
+### 查询页面列表
+GET {{host}}/api/pages
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 查询页面详情
+GET {{host}}/api/pages/96b5ed8c-6f6c-44aa-8d7a-1f28708b5158
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+### 查询页面元素
+GET {{host}}/api/pages/96b5ed8c-6f6c-44aa-8d7a-1f28708b5158/elements
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 删除页面
+DELETE {{host}}/api/pages/c9cf3f2d-034f-449d-b110-52f8675a1102
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+### 新建页面
+POST {{host}}/api/pages
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+{
+  "name": "部门管理",
+  "path": "/department",
+  "elements": [
+    {
+      "name": "btn-tree",
+      "readableName": "部门树",
+      "method": "GET",
+      "uri": "/api/departments/forest"
+    },
+    {
+      "name": "btn-create",
+      "readableName": "新建",
+      "method": "POST",
+      "uri": "/api/departments"
+    },
+    {
+      "name": "btn-update",
+      "readableName": "修改",
+      "method": "PUT",
+      "uri": "/api/departments/{id}"
+    }
+  ]
+}
+
+### 修改页面
+PUT {{host}}/api/pages/166ea1af-14aa-4ddf-a5fa-5a12e6296945
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "name": "内嵌链接",
+  "path": "",
+  "elements": [
+    {
+      "name": "btn-create",
+      "method": "POST",
+      "uri": "/users"
+    },
+    {
+      "name": "btn-update",
+      "method": "POST",
+      "uri": "/users/{id}"
+    }
+  ]
+}

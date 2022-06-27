@@ -112,6 +112,7 @@ public class RbacMenuServiceImpl implements RbacMenuService {
             parentId.failFastValidate();
         }
         Menu newMenu = Menu.builder()
+                .menuId(MenuId.uuid())
                 .name(name)
                 .pageId(pageId)
                 .icon(icon)

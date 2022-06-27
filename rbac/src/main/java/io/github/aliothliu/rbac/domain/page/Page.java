@@ -5,7 +5,6 @@ import lombok.experimental.FieldNameConstants;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -35,7 +34,7 @@ public class Page {
                     referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "element_id",
                     referencedColumnName = "ID"))
-    private Set<Element> elements = new HashSet<>();
+    private Set<Element> elements;
 
     protected Page() {
     }
@@ -56,6 +55,6 @@ public class Page {
     }
 
     public String path() {
-        return this.path.path();
+        return this.path.getPath();
     }
 }

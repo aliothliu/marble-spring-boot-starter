@@ -1,4 +1,4 @@
-package io.github.aliothliu.marble.rbac.domain;
+package io.github.aliothliu.rbac.domain;
 
 import io.github.aliothliu.rbac.domain.page.Api;
 import io.github.aliothliu.rbac.domain.page.Element;

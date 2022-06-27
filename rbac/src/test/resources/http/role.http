@@ -1,0 +1,68 @@
+### 查询角色列表
+GET {{host}}/api/roles
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 查询角色详细信息
+GET {{host}}/api/roles/manager
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+### 新建角色
+POST {{host}}/api/roles
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "name": "部门经理",
+  "code": "manager",
+  "type": "Standard",
+  "description": "管理部门日常工作"
+}
+
+### 修改角色
+PUT {{host}}/api/roles/67eca526-4b28-415d-acc6-fc2ea870d602
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "name": "部门经理",
+  "description": "管理部门日常工作、事务"
+}
+
+### 设置关联菜单
+PUT {{host}}/api/roles/111/menus
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+{
+  "menus": [
+    "cd107804-5015-4304-8c20-31094ea42d84",
+    "1a430984-5238-4d23-a586-f2c7a0d4740c",
+    "abd2e01c-c1d0-448d-93fc-134ddba4ca46",
+    "887adfae-75cc-46df-9eeb-d679763d78d3",
+    "f50913dd-9bbb-40c2-b22b-c354e2bc3627",
+    "27aff24e-acfc-4295-8170-75fcc2e5478a",
+    "4ccd5e88-3c1b-420e-b084-359d4ce3c315",
+    "1d46040b-f20a-4d15-b2ff-a80be0854566",
+    "ab77133e-5d60-42f0-8b58-c1e507b32fe1",
+    "60849bed-b333-47fb-a92c-a33612bf2d23",
+    "3abfa802-2b4c-4c68-845e-e70a964d6a2c",
+    "6fc2ada9-74a8-457a-8d17-5533eb13fc17"
+  ]
+}
+
+### 设置关联页面元素
+PUT {{host}}/api/roles/67eca526-4b28-415d-acc6-fc2ea870d602/page-elements
+Content-Type: application/json
+Authorization: Bearer {{jwt_admin}}
+
+[
+  {
+    "pageId": "36bb6152-a32b-4550-baff-4e1efe4fcfe2",
+    "elements": [
+      "btn-create",
+      "btn-update"
+    ]
+  }
+]

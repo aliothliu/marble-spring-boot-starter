@@ -23,14 +23,8 @@ Marble是一个基于Spring Boot的开箱即用的RBAC框架，允许开发者�
 #### 一、安装依赖
 ```
 <dependency>
-    <groupId>io.github.aliothliu.marble</groupId>
-    <artifactId>rbac</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-</dependency>
-
-<dependency>
-    <groupId>io.github.aliothliu.marble</groupId>
-    <artifactId>acl</artifactId>
+    <groupId>io.github.aliothliu</groupId>
+    <artifactId>marble</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
@@ -40,7 +34,7 @@ Marble是一个基于Spring Boot的开箱即用的RBAC框架，允许开发者�
 ```
 @SpringBootApplication(
 	scanBasePackageClasses = {
-		MarbleRbacConfiguration.class,
+		MarbleConfiguration.class,
 		<YourSpringApplication> .class
 	}
 )
@@ -48,9 +42,6 @@ public class YourSpringApplication {
 	....
 }
 ```
-
-1. RbacConfiguration.class 启用RBAC模块
-   2.AclConfiguration.class 启用Acl模块
 
 **注意：** 如使用ACL则进行额外的配置
 
@@ -66,7 +57,7 @@ spring:
     hibernate:
       naming:
         # 配置命名策略
-        physical-strategy: io.github.aliothliu.rbac.infrastructure.jpa.ConfigurableSpringPhysicalNamingStrategy
+        physical-strategy: io.github.aliothliu.marble.infrastructure.jpa.ConfigurableSpringPhysicalNamingStrategy
 marble:
   rbac:
     web:
